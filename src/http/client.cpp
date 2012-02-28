@@ -112,6 +112,10 @@ Response* Client::request(Request& request)
 	requestHeaders += "User-Agent: ";
 	requestHeaders += kUserAgentHeader;
 	requestHeaders += "\r\n";
+
+	if (m_cookieJar.domainHasCookies(m_host))
+		requestHeaders += "Cookie: " + m_cookieJar.headerForDomain(m_host) + "\r\n";
+	
 	requestHeaders += "Connection: close\r\n";
 
 	requestHeaders += "\r\n";
@@ -153,6 +157,32 @@ Response* Client::request(Request& request)
 	return response;
 }
 
+void Client::parseCookieHeader(const std::string& header)
+{
+	size_t pointer;
+	std::string value = header;
+
+	pointer = value.find(';');
+
+	if (pointer != std::string::npos)
+	{
+		value = value.substr(0, pointer);
+	}
+
+	pointer = value.find('=');
+
+	if (pointer != std::string::npos)
+	{
+		Cookie cookie;
+
+		cookie.name = value.substr(0, pointer);
+		cookie.value = value.substr(pointer + 1);
+		cookie.host = m_host;
+
+		m_cookieJar.addCookie(cookie);
+	}
+}
+
 size_t Client::readResponseHeaders(Response* response)
 {
 	size_t size = 0, sum = 0, pointer;
@@ -175,11 +205,13 @@ size_t Client::readResponseHeaders(Response* response)
 			break;
 		}
 
-		size = recv(m_socket, buffer, 512, 0);
+		size = recv(m_socket, buffer, kHTTPBufferSize, 0);
 		sum += size;
 
 		m_buffer.append(buffer, size);
 	}
+
+	headers.append("\r\n");
 
 	if (size < 0)
 	{
@@ -202,12 +234,22 @@ size_t Client::readResponseHeaders(Response* response)
 
 		if (size != std::string::npos)
 		{
-			response->setHeader(line.substr(0, size), line.substr(size + 2, pointer));
+			std::string header, value;
+
+			header = line.substr(0, size);
+			value = line.substr(size + 2, pointer);
+
+			response->setHeader(header, value);
+
+			if (header == "Set-Cookie")
+			{
+				parseCookieHeader(value);
+			}
 		}
 		else
 		{
 			int code;
-			char version[3], status[128];
+			char version[3], status[128];	
 
 			sscanf(line.substr(0, pointer).c_str(), "HTTP/%s %d %s", &version, &code, &status);
 

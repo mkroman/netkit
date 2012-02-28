@@ -11,27 +11,15 @@ int main(int argc, char* argv[])
 	HTTP::Request request("/login.aspx");
 	HTTP::Response* response;
 
-	request.setBody("username=functor&password=V0IR1RWW&pdummy=Kode");
-
 	response = client.get(request);
 
-	if (response->code() == 302) {
-		std::string cookie = response->header("Set-Cookie");
+	request.setPath("/community/login/login.asp");
+	request.setBody("username=d&password=d&pdummy=Kode");
 
-		delete response;
+	delete response;
 
-		request.setPath("/community/login/login.asp");
-		request.setHeader("Cookie", cookie);
+	response = client.post(request);
 
-		response = client.post(request);
-
-		if (response->code() == 200) {
-			std::cout << "yay!" << std::endl;
-
-			std::cout << response->body() << std::endl;
-		}
-	}
-	
 	delete response;
 
 	return 0;

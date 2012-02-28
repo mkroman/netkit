@@ -1,7 +1,10 @@
-#ifndef __HTTP_CLIENT_HPP
-#define __HTTP_CLIENT_HPP
+#ifndef __NETKIT_HTTP_CLIENT_HPP
+#define __NETKIT_HTTP_CLIENT_HPP
 #include <string>
 #include <cstdint>
+
+#include "http/cookie.hpp"
+#include "http/cookiejar.hpp"
 
 namespace NetKit
 {
@@ -23,16 +26,33 @@ public:
 	Response* post(Request& request);
 	Response* request(Request& request);
 
+	CookieJar& cookies()
+	{
+		return m_cookieJar;
+	}
+
+	CookieJar& cookieJar()
+	{
+		return m_cookieJar;
+	}
+
+	const Cookie& getCookie(const std::string& name)
+	{
+		return m_cookieJar.getCookie(name);
+	}
+
 private:
 	int connect();
+	void parseCookieHeader(const std::string& line);
 	size_t readResponseBody(Response* response);
 	size_t readResponseHeaders(Response* response);
 
 	int m_socket;
-	std::string m_host;
-	std::string m_buffer;
 	uint16_t m_port;
 	uint16_t m_atEOF;
+	std::string m_host;
+	std::string m_buffer;
+	CookieJar m_cookieJar;
 };
 
 }
