@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 namespace HTTP
 {
@@ -11,6 +12,36 @@ class Response
 {
 public:
 	Response();
+
+	int code() const
+	{
+		return m_code;
+	}
+
+	const std::string& body() const
+	{
+		return m_body;
+	}
+	
+	const std::string& status() const
+	{
+		return m_status;
+	}
+
+	const std::string& header(const std::string& header)
+	{
+		if (m_headers.count(header) == 1) {
+			return m_headers[header];
+		}
+		else {
+			throw std::invalid_argument("No such header");
+		}
+	}
+
+	bool hasHeader(const std::string& header)
+	{
+		return (m_headers.count(header) == 1);
+	}
 
 	void setBody(const std::string& body)
 	{
@@ -30,26 +61,6 @@ public:
 	void setHeader(const std::string& header, const std::string& value)
 	{
 		m_headers[header] = value;
-	}
-
-	const std::string& body() const
-	{
-		return m_body;
-	}
-
-	int code() const
-	{
-		return m_code;
-	}
-
-	const std::string& status() const
-	{
-		return m_status;
-	}
-
-	const std::string& header(const std::string& header)
-	{
-		return m_headers[header];
 	}
 
 	void save(const std::string& path);

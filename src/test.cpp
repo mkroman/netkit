@@ -4,19 +4,40 @@
 
 int main(int argc, char* argv[])
 {
-	std::ofstream file("/home/mk/test.tar.gz");
-
-	HTTP::Client* client = new HTTP::Client("cycle.io", 80);
-	HTTP::Request* request = new HTTP::Request("/Babble.js.tar.gz");
+	HTTP::Client client("www.n.dk", 80);
+	HTTP::Request request("/login.aspx");
 	HTTP::Response* response;
 
-	request->setBody("balls");
-	request->setHeader("User-Agent", "Mozilla/5.0");
+	request.setBody("username=functor&password=V0IR1RWW&pdummy=Kode");
 
-	response = client->get(request);
+	response = client.get(request);
 
-	delete client;
-	delete request;
+	// if (response->code() == 302) {
+	// 	request.setPath(response->header("Location"));
+	// 	request.setHeader("Cookie", response->header("Set-Cookie"));
+
+	// 	delete response;
+
+	// 	response = client.get(request);
+	// }
+
+	if (response->code() == 302) {
+		std::string cookie = response->header("Set-Cookie");
+
+		delete response;
+
+		request.setPath("/community/login/login.asp");
+		request.setHeader("Cookie", cookie);
+
+		response = client.post(request);
+
+		if (response->code() == 200) {
+			std::cout << "yay!" << std::endl;
+
+			std::cout << response->body() << std::endl;
+		}
+	}
+	
 	delete response;
 
 	return 0;

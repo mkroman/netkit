@@ -1,6 +1,7 @@
 #ifndef __HTTP_REQUEST_HPP
 #define __HTTP_REQUEST_HPP
 #include <string>
+#include <sstream>
 #include <unordered_map>
 
 namespace HTTP
@@ -20,29 +21,9 @@ public:
 	Request();
 	Request(const std::string& path);
 
-	void setMethod(RequestMethod method)
+	const std::string path()
 	{
-		m_method = method;
-	}
-
-	void setHeader(const std::string& header, const std::string& value)
-	{
-		m_headers[header] = value;
-	}
-
-	void setHeader(const std::string& header, const size_t value)
-	{
-		char buffer[32];
-		size_t size;
-
-		size = sprintf(buffer, "%d", value);
-
-		m_headers[header] = std::string(buffer, size);
-	}
-
-	void setBody(const std::string& body)
-	{
-		m_body = body;
+		return m_path;
 	}
 
 	const std::string& body()
@@ -60,14 +41,38 @@ public:
 		return m_headers;
 	}
 
-	const std::string path()
+	void setMethod(RequestMethod method)
 	{
-		return m_path;
+		m_method = method;
+	}
+
+	void setHeader(const std::string& header, const std::string& value)
+	{
+		m_headers[header] = value;
+	}
+
+	void setHeader(const std::string& header, const size_t value)
+	{
+		std::stringstream stringStream;
+
+		stringStream << value;
+
+		m_headers[header] = stringStream.str();
+	}
+
+	void setPath(const std::string& path)
+	{
+		m_path = path;
+	}
+
+	void setBody(const std::string& body)
+	{
+		m_body = body;
 	}
 
 private:
-	std::string m_body;
 	std::string m_path;
+	std::string m_body;
 	RequestMethod m_method;
 	std::unordered_map<std::string, std::string> m_headers;
 };

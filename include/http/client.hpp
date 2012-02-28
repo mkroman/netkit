@@ -15,10 +15,10 @@ public:
 	Client();
 	Client(const std::string& host, uint16_t port);
 
-	Response* get(Request* request);
-	Response* put(Request* request);
-	Response* post(Request* request);
-	Response* request(Request* request);
+	Response* get(Request& request);
+	Response* put(Request& request);
+	Response* post(Request& request);
+	Response* request(Request& request);
 
 private:
 	int connect();

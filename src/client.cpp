@@ -4,6 +4,7 @@
 #include <netdb.h>
 #include <cstring>
 #include <cstddef>
+#include <sstream>
 
 #include "http.hpp"
 #include "http/client.hpp"
@@ -23,28 +24,28 @@ Client::Client(const std::string& host, uint16_t port)
 
 }
 
-Response* Client::get(Request* request)
+Response* Client::get(Request& request)
 {
-	request->setMethod(Request::GET);
+	request.setMethod(Request::GET);
 
 	return this->request(request);
 }
 
-Response* Client::put(Request* request)
+Response* Client::put(Request& request)
 {
-	request->setMethod(Request::PUT);
+	request.setMethod(Request::PUT);
 
 	return this->request(request);
 }
 
-Response* Client::post(Request* request)
+Response* Client::post(Request& request)
 {
-	request->setMethod(Request::POST);
+	request.setMethod(Request::POST);
 
 	return this->request(request);
 }
 
-Response* Client::request(Request* request)
+Response* Client::request(Request& request)
 {
 	int result;
 	std::string requestBody, requestHeaders;
@@ -63,38 +64,38 @@ Response* Client::request(Request* request)
 	}
 
 	// Build headers.
-	switch (request->method())
+	switch (request.method())
 	{
 		default:
 		case HTTP::Request::GET:
 		{
-			requestHeaders += "GET " + request->path() + " HTTP/1.1\r\n";
+			requestHeaders += "GET " + request.path() + " HTTP/1.1\r\n";
 
 			break;
 		}
 
 		case HTTP::Request::PUT:
 		{
-			requestHeaders += "PUT " + request->path() + "\r\n";
+			requestHeaders += "PUT " + request.path() + "\r\n";
 
-			request->setHeader("Content-Length", request->body().length());
+			request.setHeader("Content-Length", request.body().length());
 
 			break;
 		}
 
 		case HTTP::Request::POST:
 		{
-			requestHeaders += "POST " + request->path() + " HTTP/1.1\r\n";
+			requestHeaders += "POST " + request.path() + " HTTP/1.1\r\n";
 
-			request->setHeader("Content-Type", "application/x-www-form-urlencoded");
-			request->setHeader("Content-Length", request->body().length());
+			request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.setHeader("Content-Length", request.body().length());
 
 			break;
 		}
 
 		case HTTP::Request::DELETE:
 		{
-			requestHeaders += "DELETE " + request->path() + " HTTP/1.1\r\n";
+			requestHeaders += "DELETE " + request.path() + " HTTP/1.1\r\n";
 
 			break;
 		}
@@ -104,10 +105,15 @@ Response* Client::request(Request* request)
 	requestHeaders += "Host: " + m_host + "\r\n";
 
 	// Add headers.
-	for (auto header : request->headers())
+	for (auto header : request.headers())
 	{
 		requestHeaders += header.first + ": " + header.second + "\r\n";
 	}
+
+	requestHeaders += "User-Agent: ";
+	requestHeaders += kHeaderUserAgent;
+	requestHeaders += "\r\n";
+	requestHeaders += "Connection: close\r\n";
 
 	requestHeaders += "\r\n";
 
@@ -115,10 +121,10 @@ Response* Client::request(Request* request)
 	::send(m_socket, requestHeaders.c_str(), requestHeaders.length(), MSG_PEEK);
 
 	// Start working on the body.
-	requestBody = request->body();
+	requestBody = request.body();
 
 	// Send content body if this is a POST/PUT request.
-	if (request->method() == HTTP::Request::POST || request->method() == HTTP::Request::PUT) {
+	if (request.method() == HTTP::Request::POST || request.method() == HTTP::Request::PUT) {
 		::send(m_socket, requestBody.c_str(), requestBody.length(), MSG_PEEK);
 	}
 
@@ -131,13 +137,16 @@ Response* Client::request(Request* request)
 	if (result < 0) {
 		perror("Could not read response headers");
 
+		delete response;
 		return nullptr;
 	}
 
 	// Read and parse the response body if there's still something to read.
-	if (m_atEOF == 0) {
+	if (!m_atEOF) {
 		result = readResponseBody(response);
 	}
+
+	::close(m_socket);
 
 	return response;
 }
@@ -178,7 +187,7 @@ size_t Client::readResponseHeaders(Response* response)
 	}
 
 	if (size < 0) {
-		perror("recv failed");
+		perror("Reading failed");
 	}
 	else if (size == 0) {
 		m_atEOF = 1;
@@ -216,22 +225,36 @@ size_t Client::readResponseHeaders(Response* response)
 size_t Client::readResponseBody(Response* response)
 {
 	char* buffer = new char[1024];
-	size_t size = 0, total = 0, pointer = 0;
+	size_t size = 0, total = 0, pointer = 0, contentLength = 0;
 
-	size = ::recv(m_socket, buffer, 1024, 0);
-	total += size;
-
-	while (size > 0) {
-		total += size;
-		m_buffer.append(buffer, size);
-
-		size = ::recv(m_socket, buffer, 1024, 0);
+	if (response->hasHeader("Content-Length")) {
+		std::stringstream temporaryStream;
+		temporaryStream << response->header("Content-Length");
+		temporaryStream >> contentLength;
 	}
+
+	do
+	{
+		size = ::recv(m_socket, buffer, 1024, 0);
+		total += size;
+
+		if (contentLength != 0 && total >= contentLength) {
+			m_buffer.append(buffer, size - (contentLength - total));
+
+			break;
+		}
+		else {
+			m_buffer.append(buffer, size);
+		}
+	}
+	while (size > 0);
 
 	m_atEOF = 1;
 
 	response->setBody(m_buffer);
 	m_buffer.clear();
+
+	delete [] buffer;
 
 	return total;
 }
