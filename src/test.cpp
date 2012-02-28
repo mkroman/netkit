@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include "http.hpp"
+
+#include "netkit/http.hpp"
+
+using namespace NetKit;
 
 int main(int argc, char* argv[])
 {
@@ -11,15 +14,6 @@ int main(int argc, char* argv[])
 	request.setBody("username=functor&password=V0IR1RWW&pdummy=Kode");
 
 	response = client.get(request);
-
-	// if (response->code() == 302) {
-	// 	request.setPath(response->header("Location"));
-	// 	request.setHeader("Cookie", response->header("Set-Cookie"));
-
-	// 	delete response;
-
-	// 	response = client.get(request);
-	// }
 
 	if (response->code() == 302) {
 		std::string cookie = response->header("Set-Cookie");

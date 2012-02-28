@@ -1,12 +1,11 @@
 #include <fstream>
 #include "http/response.hpp"
 
-using namespace HTTP;
+using namespace NetKit::HTTP;
 
 Response::Response()
 	: m_body()
 {
-
 }
 
 void Response::save(const std::string& path)

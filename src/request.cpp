@@ -1,7 +1,7 @@
 #include "http.hpp"
 #include "http/request.hpp"
 
-using namespace HTTP;
+using namespace NetKit::HTTP;
 
 Request::Request()
 {

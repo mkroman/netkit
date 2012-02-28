@@ -3,6 +3,9 @@
 #include <string>
 #include <cstdint>
 
+namespace NetKit
+{
+
 namespace HTTP
 {
 
@@ -31,6 +34,8 @@ private:
 	uint16_t m_port;
 	uint16_t m_atEOF;
 };
+
+}
 
 }
 

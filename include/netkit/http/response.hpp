@@ -5,6 +5,9 @@
 #include <iostream>
 #include <stdexcept>
 
+namespace NetKit
+{
+
 namespace HTTP
 {
 
@@ -30,10 +33,12 @@ public:
 
 	const std::string& header(const std::string& header)
 	{
-		if (m_headers.count(header) == 1) {
+		if (m_headers.count(header) == 1)
+		{
 			return m_headers[header];
 		}
-		else {
+		else
+		{
 			throw std::invalid_argument("No such header");
 		}
 	}
@@ -71,6 +76,8 @@ private:
 	std::string m_status;
 	std::map<std::string, std::string> m_headers;
 };
+
+}
 
 }
 

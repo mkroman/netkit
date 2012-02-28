@@ -4,6 +4,9 @@
 #include <sstream>
 #include <unordered_map>
 
+namespace NetKit
+{
+
 namespace HTTP
 {
 
@@ -76,6 +79,8 @@ private:
 	RequestMethod m_method;
 	std::unordered_map<std::string, std::string> m_headers;
 };
+
+}
 
 }
 
