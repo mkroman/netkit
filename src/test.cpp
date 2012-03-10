@@ -1,26 +1,23 @@
 #include <iostream>
 #include <fstream>
 
-#include "NetKit/HTTP.hpp"
+#include "NetKit/IO.hpp"
 
 using namespace NetKit;
 
 int main(int argc, char* argv[])
 {
-	HTTP::Client client("www.n.dk", 80);
-	HTTP::Request request("/login.aspx");
-	HTTP::Response* response;
+	IO::Socket socket(AF_INET, SOCK_STREAM, 0);
+	IO::SocketAddress address("www.n.dk", 80);
 
-	response = client.get(request);
+	std::cout << "Resolved IP is " << address.toIPAddress() << std::endl;
 
-	request.setPath("/community/login/login.asp");
-	request.setBody("username=d&password=d&pdummy=Kode");
-
-	delete response;
-
-	response = client.post(request);
-
-	delete response;
+	// if (socket.connect(address)) {
+	// 	std::cout << "Connected!" << std::endl;
+	// }
+	// else {
+	// 	std::cout << "Could not connect" << std::endl;
+	// }
 
 	return 0;
 }

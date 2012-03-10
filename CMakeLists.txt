@@ -16,6 +16,9 @@ SET(NETKIT_SOURCES
 	src/HTTP/Request.cpp
 	src/HTTP/Response.cpp
 	src/HTTP/CookieJar.cpp
+	src/IO/Socket.cpp
+	src/IO/SocketAddress.cpp
+	src/IO/TCPSocket.cpp
 )
 
 INCLUDE_DIRECTORIES(include include/NetKit)
