@@ -21,3 +21,31 @@ Socket::~Socket()
 {
 	::close(m_fd);
 }
+
+bool Socket::connect(const SocketAddress& address)
+{
+	int result = 0;
+	struct sockaddr native = address.toNativeType();
+
+	result = ::connect(m_fd, &native, sizeof(native));
+
+	return (result == 0);
+}
+
+ssize_t Socket::write(const char* source, size_t length)
+{
+	ssize_t result = 0;
+
+	result = ::send(m_fd, source, length, 0);
+
+	return result;
+}
+
+ssize_t Socket::read(char* destination, size_t length)
+{
+	ssize_t result = 0;
+
+	result = ::recv(m_fd, destination, length, 0);
+
+	return result;
+}

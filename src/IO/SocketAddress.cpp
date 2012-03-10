@@ -76,3 +76,17 @@ std::string SocketAddress::toIPAddress() const
 		return std::string(result);
 	}
 }
+
+struct sockaddr SocketAddress::toNativeType() const
+{
+	if (m_family == IPv4Address) {
+		struct sockaddr_in result = m_address.sa_in;
+
+		return *reinterpret_cast<struct sockaddr*>(&result);
+	}
+	else {
+		struct sockaddr_in6 result = m_address.sa_in6;
+
+		return *reinterpret_cast<struct sockaddr*>(&result);
+	}
+}

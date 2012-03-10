@@ -12,12 +12,14 @@ int main(int argc, char* argv[])
 
 	std::cout << "Resolved IP is " << address.toIPAddress() << std::endl;
 
-	// if (socket.connect(address)) {
-	// 	std::cout << "Connected!" << std::endl;
-	// }
-	// else {
-	// 	std::cout << "Could not connect" << std::endl;
-	// }
+	if (socket.connect(address)) {
+		std::cout << "Connected!" << std::endl;
+
+		socket.write("HEAD /\r\n\r\n", 10);
+	}
+	else {
+		std::cout << "Could not connect" << std::endl;
+	}
 
 	return 0;
 }
