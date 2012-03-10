@@ -3,8 +3,8 @@
 #include <string>
 #include <cstdint>
 
-#include "http/cookie.hpp"
-#include "http/cookiejar.hpp"
+#include "HTTP/Cookie.hpp"
+#include "HTTP/CookieJar.hpp"
 
 namespace NetKit
 {

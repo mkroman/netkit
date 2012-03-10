@@ -5,10 +5,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include "http.hpp"
-#include "http/client.hpp"
-#include "http/request.hpp"
-#include "http/response.hpp"
+#include "HTTP.hpp"
+#include "HTTP/Client.hpp"
+#include "HTTP/Request.hpp"
+#include "HTTP/Response.hpp"
 
 using namespace NetKit::HTTP;
 

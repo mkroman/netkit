@@ -2,6 +2,7 @@
 #define __NETKIT_HTTP_COOKIE_HPP
 
 #include <string>
+#include <sstream>
 
 namespace NetKit
 {
@@ -14,6 +15,15 @@ struct Cookie
 	std::string host;
 	std::string name;
 	std::string value;
+
+	std::string toString()
+	{
+		std::stringstream result;
+
+		result << name << "=" << value;
+
+		return result.str(); 
+	};
 };
 
 }

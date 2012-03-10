@@ -11,12 +11,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(NETKIT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "NETKIT include directory")
 
 SET(NETKIT_SOURCES
-	src/http/client.cpp
-	src/http/request.cpp
-	src/http/response.cpp
+	src/HTTP/Client.cpp
+	src/HTTP/Request.cpp
+	src/HTTP/Response.cpp
+	src/HTTP/CookieJar.cpp
 )
 
-INCLUDE_DIRECTORIES(include include/netkit)
+INCLUDE_DIRECTORIES(include include/NetKit)
 
 ADD_LIBRARY(netkit SHARED ${NETKIT_SOURCES})
 ADD_EXECUTABLE(test src/test.cpp)

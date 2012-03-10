@@ -1,5 +1,5 @@
-#include "http.hpp"
-#include "http/request.hpp"
+#include "HTTP.hpp"
+#include "HTTP/Request.hpp"
 
 using namespace NetKit::HTTP;
 

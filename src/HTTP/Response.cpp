@@ -1,5 +1,5 @@
 #include <fstream>
-#include "http/response.hpp"
+#include "HTTP/Response.hpp"
 
 using namespace NetKit::HTTP;
 

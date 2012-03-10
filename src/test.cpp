@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "netkit/http.hpp"
+#include "NetKit/HTTP.hpp"
 
 using namespace NetKit;
 
