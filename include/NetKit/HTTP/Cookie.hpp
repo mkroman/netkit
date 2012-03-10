@@ -10,20 +10,76 @@ namespace NetKit
 namespace HTTP
 {
 
-struct Cookie
+class Cookie
 {
-	std::string host;
-	std::string name;
-	std::string value;
+public:
+	/**
+	 * \brief Construct a cookie with no name, value or domain.
+	 */
+	Cookie();
 
-	std::string toString()
+	/**
+	 * \brief Construct a cookie with a name and a value.
+	 */
+	Cookie(const std::string& name, const std::string& value);
+
+	/**
+	 * \brief Get the cookie formatted as a string.
+	 */
+	std::string toString() const;
+
+	/**
+	 * \brief Get the cookie name.
+	 */
+	const std::string& name()
 	{
-		std::stringstream result;
+		return m_name;
+	}
 
-		result << name << "=" << value;
+	/**
+	 * \brief Get the cookie value.
+	 */
+	const std::string& value()
+	{
+		return m_value;
+	}
 
-		return result.str(); 
-	};
+	/**
+	 * \brief Get the cookie domain.
+	 */
+	const std::string& domain()
+	{
+		return m_domain;
+	}
+
+	/**
+	 * \brief Set the cookie name.
+	 */
+	void setName(const std::string& name)
+	{
+		m_name = name;
+	}
+
+	/**
+	 * \brief Set the cookie value.
+	 */
+	void setValue(const std::string& value)
+	{
+		m_value = value;
+	}
+
+	/**
+	 * \brief Set the cookie domain.
+	 */
+	 void setDomain(const std::string& domain)
+	 {
+	 	m_domain = domain;
+	 }
+
+private:
+	std::string m_name;
+	std::string m_value;
+	std::string m_domain;
 };
 
 }

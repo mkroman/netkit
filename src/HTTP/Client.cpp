@@ -113,8 +113,11 @@ Response* Client::request(Request& request)
 	requestHeaders += kUserAgentHeader;
 	requestHeaders += "\r\n";
 
-	if (m_cookieJar.domainHasCookies(m_host))
-		requestHeaders += "Cookie: " + m_cookieJar.headerForDomain(m_host) + "\r\n";
+	if (m_cookieJar.domainHasCookies(m_host)) {
+		for (auto cookie : m_cookieJar.cookiesForDomain(m_host)) {
+			requestHeaders += "Cookie: " + cookie.toString() + "\r\n";
+		}
+	}
 	
 	requestHeaders += "Connection: close\r\n";
 
@@ -175,9 +178,9 @@ void Client::parseCookieHeader(const std::string& header)
 	{
 		Cookie cookie;
 
-		cookie.name = value.substr(0, pointer);
-		cookie.value = value.substr(pointer + 1);
-		cookie.host = m_host;
+		cookie.setName(value.substr(0, pointer));
+		cookie.setValue(value.substr(pointer + 1));
+		cookie.setDomain(m_host);
 
 		m_cookieJar.addCookie(cookie);
 	}

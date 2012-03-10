@@ -18,19 +18,40 @@ class Response;
 class Client
 {
 public:
+	/**
+	 * \brief Construct a new client without a hostname and port.
+	 */
 	Client();
+
+	/**
+	 * \brief Construct a new client associated with a hostname and a port.
+	 */
 	Client(const std::string& host, uint16_t port);
 
+	/**
+	 * \brief Perform a GET request.
+	 */
 	Response* get(Request& request);
+
+	/**
+	 * \brief Perform a PUT request.
+	 */
 	Response* put(Request& request);
+
+	/**
+	 * \brief Perform a POST request.
+	 */
 	Response* post(Request& request);
+
+	/**
+	 * \brief Perform a request where the request method is already set in
+	 * the request parameter.
+	 */
 	Response* request(Request& request);
 
-	CookieJar& cookies()
-	{
-		return m_cookieJar;
-	}
-
+	/**
+	 * Get the cookie jar used in this client.
+	 */
 	CookieJar& cookieJar()
 	{
 		return m_cookieJar;
@@ -38,7 +59,7 @@ public:
 
 	const Cookie& getCookie(const std::string& name)
 	{
-		return m_cookieJar.getCookie(name);
+		return m_cookieJar.getCookieByName(name);
 	}
 
 private:

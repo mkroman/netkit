@@ -12,6 +12,7 @@ SET(NETKIT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "NETKI
 
 SET(NETKIT_SOURCES
 	src/HTTP/Client.cpp
+	src/HTTP/Cookie.cpp
 	src/HTTP/Request.cpp
 	src/HTTP/Response.cpp
 	src/HTTP/CookieJar.cpp
