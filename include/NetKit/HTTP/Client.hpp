@@ -1,3 +1,4 @@
+
 #ifndef __NETKIT_HTTP_CLIENT_HPP
 #define __NETKIT_HTTP_CLIENT_HPP
 #include <string>
@@ -63,17 +64,32 @@ public:
 	}
 
 private:
+	/**
+	 * \brief Create a socket, resolve the hostname and connect to the host.
+	 */
 	int connect();
+
+	/**
+	 * \brief Parse a header with cookie values in it.
+	 */
 	void parseCookieHeader(const std::string& line);
+
+	/**
+	 * \brief Parse the response body as it's getting received.
+	 */
 	size_t readResponseBody(Response* response);
+
+	/**
+	 * \brief Parse the response headers.
+	 */
 	size_t readResponseHeaders(Response* response);
 
-	int m_socket;
-	uint16_t m_port;
-	uint16_t m_atEOF;
-	std::string m_host;
-	std::string m_buffer;
-	CookieJar m_cookieJar;
+	int         m_socket; //!< The socket file descriptor.
+	uint16_t    m_port; //!< The remote host.
+	uint16_t    m_atEOF; //!< Flag that tells if the socket is open or not.
+	std::string m_host; //!< The remote host address/hostname.
+	std::string m_buffer; //!< The i/o buffer.
+	CookieJar   m_cookieJar; //!< The cookie jar to hold the cookies.
 };
 
 }

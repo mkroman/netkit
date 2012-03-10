@@ -51,8 +51,7 @@ CookieJar::CookieList CookieJar::cookiesForDomain(const std::string& domain) con
 
 bool CookieJar::domainHasCookies(const std::string& domain) const
 {
-	for (auto cookie : m_cookies)
-	{
+	for (auto cookie : m_cookies) {
 		if (cookie.domain() == domain) {
 			return true;
 		}

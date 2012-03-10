@@ -10,6 +10,12 @@
 namespace NetKit
 {
 
+/**
+ * HTTP Client library.
+ *
+ * Currently supported methods: GET, PUT, POST and DELETE.
+ * The client tries to support HTTP 1.1 technologies as much as possible.
+ */
 namespace HTTP
 {
 
