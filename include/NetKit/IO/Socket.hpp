@@ -16,6 +16,13 @@ namespace IO
 class Socket
 {
 public:
+	enum SocketState
+	{
+		SocketDisconnected,
+		SocketTimeout,
+		SocketConnected
+	};
+
 	/**
 	 * \brief Construct a new socket, the parameters are the exact same as the regular
 	 * ::socket function.
@@ -56,11 +63,18 @@ public:
 		return m_fd;
 	}
 
+protected:
+	/**
+	 * \brief Called when the connection was lost.
+	 */
+	void connectionLost();
+
 private:
 	int           m_fd;
 	int           m_type;
 	int           m_family;
 	int           m_protocol;
+	SocketState   m_state;
 	SocketAddress m_address;
 };
 

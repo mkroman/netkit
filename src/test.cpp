@@ -7,15 +7,16 @@ using namespace NetKit;
 
 int main(int argc, char* argv[])
 {
-	IO::Socket socket(AF_INET, SOCK_STREAM, 0);
-	IO::SocketAddress address("www.n.dk", 80);
+	IO::TCPSocket socket("hhsrv.n.dk", 499);
 
-	std::cout << "Resolved IP is " << address.toIPAddress() << std::endl;
-
-	if (socket.connect(address)) {
+	if (socket.connect()) {
 		std::cout << "Connected!" << std::endl;
 
-		socket.write("HEAD /\r\n\r\n", 10);
+		std::string line = socket.readLine();
+
+		std::cout << "<< " << line << std::endl;
+
+		socket.sendLine("dddd");
 	}
 	else {
 		std::cout << "Could not connect" << std::endl;

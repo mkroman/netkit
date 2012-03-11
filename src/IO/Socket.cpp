@@ -3,7 +3,7 @@
 using namespace NetKit::IO;
 
 Socket::Socket(int family, int type, int protocol)
-	: m_family(family), m_type(type), m_protocol(protocol)
+	: m_family(family), m_type(type), m_protocol(protocol), m_state(SocketDisconnected)
 {
 	int result = 0;
 
@@ -29,6 +29,10 @@ bool Socket::connect(const SocketAddress& address)
 
 	result = ::connect(m_fd, &native, sizeof(native));
 
+	if (result == 0) {
+		m_state = SocketConnected;
+	}
+
 	return (result == 0);
 }
 
@@ -48,4 +52,9 @@ ssize_t Socket::read(char* destination, size_t length)
 	result = ::recv(m_fd, destination, length, 0);
 
 	return result;
+}
+
+void Socket::connectionLost()
+{
+	m_state = SocketDisconnected;
 }

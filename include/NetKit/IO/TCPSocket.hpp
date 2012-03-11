@@ -13,9 +13,14 @@ class TCPSocket : public Socket
 public:
 	TCPSocket(const std::string& host, uint16_t port);
 
+	bool        connect();
+	std::string readLine();
+	void        sendLine(const std::string& line);
+
 private:
 	std::string m_host;
 	uint16_t    m_port;
+	std::string m_buffer;
 };
 
 }
