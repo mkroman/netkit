@@ -13,6 +13,9 @@ namespace NetKit
 namespace IO
 {
 
+/**
+ * \brief Basic socket used for network communication.
+ */
 class Socket
 {
 public:

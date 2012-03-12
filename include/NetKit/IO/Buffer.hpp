@@ -12,6 +12,9 @@ namespace IO
 
 using std::deque;
 
+/**
+ * \brief Generic memory buffer used for network input/output.
+ */
 class Buffer : private deque<unsigned char>
 {
 public:

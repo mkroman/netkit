@@ -14,20 +14,20 @@ namespace NetKit
 namespace IO
 {
 
-typedef union address
-{
-	struct sockaddr sa;
-	struct sockaddr_in sa_in;
-	struct sockaddr_in6 sa_in6;
-	struct sockaddr_storage sa_stor;
-}
-address_t;
-
 /**
  * \brief SocketAddress is used for resolving and storing remote addresses.
  */
 class SocketAddress
 {
+	typedef union address
+	{
+		struct sockaddr sa;
+		struct sockaddr_in sa_in;
+		struct sockaddr_in6 sa_in6;
+		struct sockaddr_storage sa_stor;
+	}
+	address_t;
+	
 public:
 	enum AddressFamily
 	{

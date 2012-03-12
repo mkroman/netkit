@@ -22,7 +22,7 @@ Buffer::size_type Buffer::find(const char byte)
 		}
 	}
 
-	return end();
+	return -1;
 }
 
 std::string Buffer::substr(size_type start, size_type end)
