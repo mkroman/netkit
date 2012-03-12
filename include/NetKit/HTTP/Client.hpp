@@ -16,6 +16,9 @@ namespace HTTP
 class Request;
 class Response;
 
+/**
+ * \brief HTTP client to process requests aswell as responses.
+ */
 class Client
 {
 public:

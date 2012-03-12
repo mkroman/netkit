@@ -9,6 +9,9 @@ namespace NetKit
 namespace HTTP
 {
 
+/**
+ * \brief Cookie container which contains cookies for multiple domains.
+ */
 class CookieJar
 {
 public:
