@@ -1,6 +1,7 @@
 #ifndef __NETKIT_IO_TCPSOCKET_HPP
 #define __NETKIT_IO_TCPSOCKET_HPP
 #include "IO/Socket.hpp"
+#include "IO/Buffer.hpp"
 
 namespace NetKit
 {
@@ -20,7 +21,7 @@ public:
 private:
 	std::string m_host;
 	uint16_t    m_port;
-	std::string m_buffer;
+	Buffer      m_buffer;
 };
 
 }

@@ -63,6 +63,14 @@ public:
 		return m_fd;
 	}
 
+	/**
+	 * \brief Test to see if the socket is connected.
+	 */
+	bool connected()
+	{
+		return (m_state == SocketConnected);
+	}
+
 protected:
 	/**
 	 * \brief Called when the connection was lost.

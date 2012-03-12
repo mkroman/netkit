@@ -24,7 +24,7 @@ std::string TCPSocket::readLine()
 		size = read(data, 512);
 
 		if (size > 0) {
-			m_buffer.append(data, size);
+			m_buffer.add(data, size);
 			index = m_buffer.find('\n');
 		}
 		else {

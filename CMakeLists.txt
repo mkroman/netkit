@@ -19,6 +19,7 @@ SET(NETKIT_SOURCES
 	src/IO/Socket.cpp
 	src/IO/SocketAddress.cpp
 	src/IO/TCPSocket.cpp
+	src/IO/Buffer.cpp
 )
 
 INCLUDE_DIRECTORIES(include include/NetKit)
