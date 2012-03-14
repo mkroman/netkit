@@ -2,9 +2,18 @@
 
 using namespace NetKit::IO;
 
+TCPSocket::TCPSocket() : Socket(AF_INET, SOCK_STREAM, 0)
+{
+}
+
 TCPSocket::TCPSocket(const std::string& host, uint16_t port) : Socket(AF_INET, SOCK_STREAM, 0),
 	m_host(host), m_port(port)
 {
+}
+
+bool TCPSocket::connect(const SocketAddress& socket_address)
+{
+	return Socket::connect(socket_address);
 }
 
 bool TCPSocket::connect()
@@ -17,7 +26,7 @@ bool TCPSocket::connect()
 std::string TCPSocket::readLine()
 {
 	char data[512];
-	size_t size = 0, index = -1;
+	size_t size = 0, index = std::string::npos;
 	std::string result;
 
 	while (index == std::string::npos) {

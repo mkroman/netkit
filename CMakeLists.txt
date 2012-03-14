@@ -16,15 +16,18 @@ SET(NETKIT_SOURCES
 	src/HTTP/Request.cpp
 	src/HTTP/Response.cpp
 	src/HTTP/CookieJar.cpp
-	src/IO/Socket.cpp
 	src/IO/SocketAddress.cpp
 	src/IO/TCPSocket.cpp
+	src/IO/Socket.cpp
 	src/IO/Buffer.cpp
 )
+
+FIND_PACKAGE(LibEvent)
 
 INCLUDE_DIRECTORIES(include include/NetKit ${LIBEVENT_INCLUDE_DIRS})
 
 ADD_LIBRARY(netkit SHARED ${NETKIT_SOURCES})
+TARGET_LINK_LIBRARIES(netkit ${LIBEVENT_LIBRARIES})
 
 ADD_EXECUTABLE(test src/test.cpp)
-TARGET_LINK_LIBRARIES(test netkit ${LIBEVENT_LIBRARIES})
+TARGET_LINK_LIBRARIES(test netkit)

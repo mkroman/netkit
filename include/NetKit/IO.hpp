@@ -3,6 +3,7 @@
 #include "IO/Socket.hpp"
 #include "IO/Buffer.hpp"
 #include "IO/TCPSocket.hpp"
+#include "IO/Connection.hpp"
 #include "IO/SocketAddress.hpp"
 
 namespace NetKit

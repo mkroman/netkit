@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "NetKit/IO.hpp"
 
@@ -7,20 +8,13 @@ using namespace NetKit;
 
 int main(int argc, char* argv[])
 {
-	IO::TCPSocket socket("hhsrv.n.dk", 499);
+	IO::Connection<IO::TCPSocket> connection;
 
-	if (socket.connect()) {
-		std::cout << "Connected!" << std::endl;
+	connection.connect("hhsrv.n.dk", 499);
 
-		std::string line = socket.readLine();
+	std::vector<IO::Connection*> connections;
 
-		std::cout << "<< " << line << std::endl;
-
-		socket.sendLine("dddd");
-	}
-	else {
-		std::cout << "Could not connect" << std::endl;
-	}
+	connections.push_back(&connection);
 
 	return 0;
 }

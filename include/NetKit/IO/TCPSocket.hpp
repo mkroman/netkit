@@ -15,6 +15,7 @@ namespace IO
 class TCPSocket : public Socket
 {
 public:
+	TCPSocket();
 	/**
 	 * \brief Construct a new TCPSocket with a remote host and port.
 	 */
@@ -24,6 +25,8 @@ public:
 	 * \brief Connect to the remote host.
 	 */
 	bool        connect();
+
+	bool connect(const SocketAddress& socket_address);
 
 	/**
 	 * \brief Read until a newline is found and return the entire line.
