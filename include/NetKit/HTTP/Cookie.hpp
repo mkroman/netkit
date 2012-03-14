@@ -12,6 +12,7 @@ namespace HTTP
 
 /**
  * \brief Cookie container class.
+ */
 class Cookie
 {
 public:
