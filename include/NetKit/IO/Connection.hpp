@@ -28,17 +28,25 @@ struct IOBuffer
 	struct evbuffer* write;
 };
 
+class ConnectionBase
+{
+public:
+	virtual bool connect(const std::string& host, uint16_t port) {}
+
+protected:
+	IOBuffer m_buffer;
+};
+
 template <typename SocketT>
-class Connection
+class Connection : public ConnectionBase
 {
 public:
 	Connection();
-
+	
 	bool connect(const std::string& host, uint16_t port);
 
-private:
-	SocketT  m_socket;
-	IOBuffer m_buffer;
+protected:
+	SocketT m_socket;
 };
 
 template <class T>

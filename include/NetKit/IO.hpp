@@ -5,6 +5,7 @@
 #include "IO/TCPSocket.hpp"
 #include "IO/Connection.hpp"
 #include "IO/SocketAddress.hpp"
+#include "IO/ConnectionManager.hpp"
 
 namespace NetKit
 {

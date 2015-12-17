@@ -1,5 +1,8 @@
 #ifndef __NETKIT_IO_CONNECTIONMANAGER_HPP
 #define __NETKIT_IO_CONNECTIONMANAGER_HPP
+#include <string>
+#include <vector>
+#include "Connection.hpp"
 
 namespace NetKit
 {
@@ -12,8 +15,11 @@ class ConnectionManager
 public:
 	ConnectionManager();
 
-private:
-	
+	template <typename SocketT>
+	bool connect(const std::string& host, uint16_t port);
+
+protected:
+	std::vector<IO::ConnectionBase*> m_connections;
 };
 
 }

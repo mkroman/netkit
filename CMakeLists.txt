@@ -20,6 +20,7 @@ SET(NETKIT_SOURCES
 	src/IO/TCPSocket.cpp
 	src/IO/Socket.cpp
 	src/IO/Buffer.cpp
+	src/IO/ConnectionManager.cpp
 )
 
 FIND_PACKAGE(LibEvent)

@@ -9,12 +9,11 @@ using namespace NetKit;
 int main(int argc, char* argv[])
 {
 	IO::Connection<IO::TCPSocket> connection;
+	IO::ConnectionManager manager;
 
-	connection.connect("hhsrv.n.dk", 499);
-
-	std::vector<IO::Connection*> connections;
-
-	connections.push_back(&connection);
+	if (manager.connect(&connection)) {
+		
+	}
 
 	return 0;
 }
